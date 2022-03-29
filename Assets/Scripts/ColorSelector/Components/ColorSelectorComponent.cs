@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ColorPicker.Components
+namespace ColorSelector.Components
 {
     public abstract class ColorSelectorComponent : MonoBehaviour
     {

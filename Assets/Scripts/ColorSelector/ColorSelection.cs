@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ColorPicker
+namespace ColorSelector
 {
     public class ColorSelection
     {
@@ -30,7 +30,7 @@ namespace ColorPicker
             
             UpdateColor();
         }
-        public void SetColorComponent(SelectionType selectionType, float value)
+        public void SetColor(SelectionType selectionType, float value)
         {
             var clamped = Mathf.Clamp01(value);
 
@@ -60,6 +60,16 @@ namespace ColorPicker
             UpdateColor();
         }
 
+        public void SetColor(Color color)
+        {
+            Color = color;
+            Color.RGBToHSV(color, out _h, out _s, out _v);
+            
+            HueColor = Color.HSVToRGB(_h, 1f, 1f);
+            SaturationColor = Color.HSVToRGB(_h, _s, 1f);
+            ValueColor = Color.HSVToRGB(_h, 1f, _v);
+        }
+
         public Color GetColor(SelectionType selectionType)
         {
             switch (selectionType)
@@ -68,6 +78,17 @@ namespace ColorPicker
                 case SelectionType.Saturation: return SaturationColor;
                 case SelectionType.Value: return ValueColor;
                 default: return Color;
+            }
+        }
+
+        public float GetSelectionValue(SelectionType selectionType)
+        {
+            switch (selectionType)
+            {
+                case SelectionType.Hue: return _h;
+                case SelectionType.Saturation: return _s;
+                case SelectionType.Value: return _v;
+                default: return 0f;
             }
         }
         

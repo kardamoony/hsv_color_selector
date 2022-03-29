@@ -115,16 +115,15 @@ Shader "Kardamoony/Color Selector/Color Wheel"
                 half4 frameColor = _FrameColor * IN.color * backgroundAlpha;
                 half4 rgbWheelColor = half4(hue2rgb(angle), wheelAlpha) * wheelAlpha;
                 
-                half4 samplerFrameColor = _FrameColor * IN.color * (samplerFrame - samplerCircle);
-
-                half4 shadowColor = shadowCircle * _Gradient0;
+                //half4 samplerFrameColor = _FrameColor * IN.color * (samplerFrame - samplerCircle);
+                //half4 shadowColor = shadowCircle * _Gradient0;
 
                 //return samplerColor;
                 //return rgbWheelColor;
                 //return frameColor;
                 
                 return saturate(frameColor + rgbWheelColor + samplerColor);
-                return saturate(frameColor + rgbWheelColor + samplerColor + shadowColor + samplerFrameColor);
+                //return saturate(frameColor + rgbWheelColor + samplerColor + shadowColor + samplerFrameColor);
             }
             
             ENDHLSL

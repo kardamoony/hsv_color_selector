@@ -1,32 +1,13 @@
-using Unity.Mathematics;
 using UnityEngine;
 
-namespace ColorPicker.StaticHelpers
+namespace ColorSelector.StaticHelpers
 {
     public static class MathHelper
     {
-        public static float Remap(this float value, float fromMin, float fromMax, float toMin, float toMax)
-        {
-            return (toMax - toMin) * ((value - fromMin) / (fromMax - fromMin)) + toMin;
-        }
-        
-        public static float Remap01(this float value, float fromMin, float fromMax)
-        {
-            return (value - fromMin) / (fromMax - fromMin);
-        }
-
         public static float GetAngle360(Vector2 position, Vector2 center, Vector2 originalRotation)
         {
             var dir = (position - center).normalized;
             var signedAngle = -Vector2.SignedAngle(originalRotation, dir);
-            if (signedAngle < 0) signedAngle = 360 + signedAngle;
-            return signedAngle;
-        }
-        
-        public static float GetAngle360(Vector3 position, Vector3 center, Vector3 originalRotation, Vector3 axis)
-        {
-            var dir = (position - center).normalized;
-            var signedAngle = -Vector3.SignedAngle(originalRotation, dir, axis);
             if (signedAngle < 0) signedAngle = 360 + signedAngle;
             return signedAngle;
         }
@@ -39,6 +20,14 @@ namespace ColorPicker.StaticHelpers
             return new Vector3(rotated.x, rotated.y, rotated.z) + center;
         }
         
-        //public static 
+        public static float Remap01(this float value, float fromMin, float fromMax)
+        {
+            return (value - fromMin) / (fromMax - fromMin);
+        }
+
+        public static float Remap(this float value, float fromMin, float fromMax, float toMin, float toMax)
+        {
+            return (toMax - toMin) * ((value - fromMin) / (fromMax - fromMin)) + toMin;
+        }
     }
 }

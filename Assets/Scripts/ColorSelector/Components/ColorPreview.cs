@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ColorPicker.Components
+namespace ColorSelector.Components
 {
     public class ColorPreview : ColorSelectorComponent
     {

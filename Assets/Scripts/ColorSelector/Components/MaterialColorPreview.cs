@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ColorPicker.Components
+namespace ColorSelector.Components
 {
     public class MaterialColorPreview : ColorPreview
     {
