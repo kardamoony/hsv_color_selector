@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mat_slider_left
+  m_Name: mat_slider_left 1
   m_Shader: {fileID: 4800000, guid: 87f1977848bfe8143a4b70c420e18db9, type: 3}
   m_ShaderKeywords: FLIP_Y
   m_LightmapFlags: 4
@@ -103,21 +103,21 @@ Material:
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _FlipUv: 0
-    - _FlipX: 0
-    - _FlipY: 1
+    - _FlipX: 1
+    - _FlipY: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _InnerCircle: 0.95
+    - _InnerCircle: 0.506
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _OuterCircle: 1
+    - _OuterCircle: 0.532
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Rotate: 10
+    - _Rotate: 20
     - _Rotate1: 0
-    - _Sector: 160
+    - _Sector: 140
     - _Sector0: 160
     - _Sector1: -2
     - _Smoothness: 0.5
@@ -130,7 +130,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color0: {r: 1, g: 0, b: 0.5163393, a: 1}
+    - _Color0: {r: 1, g: 0.020450119, b: 0, a: 1}
     - _Color1: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}

@@ -1,62 +1,60 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace ColorSelector.Components
 {
     public class ColorValueController : ColorSelectorComponent
     {
         [SerializeField] private RectTransform _rect;
-        [SerializeField] private Image _img;
-        [SerializeField] private Transform _cursorTransform;
+        [SerializeField] private ColorCursor _cursor;
         [SerializeField] private ColorSelection.SelectionType _selectionType;
+        
+        [SerializeField] protected Material Material;
 
         private readonly Vector3[] _corners = new Vector3[4];
         
-        protected Material Material => _img.material;
-
         public void UpdateCursorPosition(ColorSelection colorSelection)
         {
-            _cursorTransform.position = ValueToCursorPosition(_rect.position, colorSelection.GetSelectionValue(_selectionType));
+            _cursor.UpdatePosition(ValueToCursorData(_rect.position, colorSelection.GetSelectionValue(_selectionType)));
         }
         
         public void ProcessClick(PointerEventData eventData, Vector3? dragStartPosition, Action<ColorSelection.SelectionType, float> callback)
         {
             var center = _rect.position;
 
-            var isDragValid = IsClickValid(dragStartPosition, center, out _, out _);
+            var isDragValid = IsClickValid(dragStartPosition, center, out _);
             if (dragStartPosition.HasValue && !isDragValid) return;
 
-            if (!IsClickValid(eventData.position, center, out var cursorPosition, out var colorValue) && !isDragValid) return;
-            _cursorTransform.position = cursorPosition;
-            callback?.Invoke(_selectionType, colorValue);
+            if (!IsClickValid(eventData.position, center, out var data) && !isDragValid) return;
+            _cursor.UpdatePosition(data);
+            callback?.Invoke(_selectionType, data.Value);
         }
 
-        protected virtual bool IsClickValid(Vector3? position, Vector3 center, out Vector3 cursorPosition, out float colorValue)
+        protected virtual bool IsClickValid(Vector3? position, Vector3 center, out ColorCursorData data)
         {
-            cursorPosition = Vector3.zero;
-            colorValue = 1f;
+            data = default;
             return false;
         }
 
-        protected virtual Vector3 ValueToCursorPosition(Vector3 center, float value)
+        protected virtual ColorCursorData ValueToCursorData(Vector3 center, float value)
         {
-            return Vector3.zero;
+            return default;
         }
 
         protected virtual void OnMaterialSetup(Material material){}
         
         protected float GetMaxRadius(Vector3 center)
         {
+            //TODO: world corners are bad!!!!
             _rect.GetWorldCorners(_corners); //order is: bottom left, top left, top right, bottom right
             return Vector3.Distance(center, new Vector3(center.x, _corners[0].y, center.z));
         }
         
         private void SetupMaterial()
         {
-            if (!_img) return;
-            OnMaterialSetup(_img.material);
+            if (!Material) return;
+            OnMaterialSetup(Material);
         }
 
         private void Awake()

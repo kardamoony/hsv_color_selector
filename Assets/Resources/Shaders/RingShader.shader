@@ -5,9 +5,29 @@ Shader "Kardamoont/Ring"
         _OuterCircle ("Outer Circle", Range(0, 1)) = 1
         _InnerCircle ("Inner Circle", Range(0, 1)) = 0.5
         _Color ("Color", Color) = (1, 1, 1, 1)
+        
+        //Stencil
+        [Enum(UnityEngine.Rendering.CompareFunction)] _StencilComp ("Stencil Comparison", Float) = 8
+        _Stencil ("Stencil ID", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)] _StencilOp ("Stencil Operation", Float) = 0
+        _StencilWriteMask ("Stencil Write Mask", Range(0, 255)) = 255
+        _StencilReadMask ("Stencil Read Mask", Range(0, 255)) = 255
+        
+        [HideInInspector] _ColorMask ("Color Mask", Float) = 15
     }
     SubShader
     {
+        ColorMask RGB
+        
+        Stencil
+		{
+			Ref [_Stencil]
+			Comp [_StencilComp]
+			Pass [_StencilOp] 
+			ReadMask [_StencilReadMask]
+			WriteMask [_StencilWriteMask]
+		}
+        
         Tags 
         {
             "Queue" = "Transparent"
@@ -64,8 +84,8 @@ Shader "Kardamoont/Ring"
 
             half4 frag (Varyings IN) : SV_Target
             {
-                half4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.uv) * _Color * IN.color;
-                col.a = Circle(IN.uv.zw, _OuterCircle * 0.5) - Circle(IN.uv.zw, _InnerCircle * 0.5);
+                half4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.uv.xy) * _Color * IN.color;
+                col.a *= Circle(IN.uv.zw, _OuterCircle * 0.5) - Circle(IN.uv.zw, _InnerCircle * 0.5);
                 return col;
             }
             

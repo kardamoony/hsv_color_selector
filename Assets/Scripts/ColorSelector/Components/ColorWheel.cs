@@ -11,36 +11,38 @@ namespace ColorSelector.Components
         [Range(0, 1)] 
         [SerializeField] private float _backgroundSize = 1f;
 
-        protected override Vector3 ValueToCursorPosition(Vector3 center, float value)
+        protected override ColorCursorData ValueToCursorData(Vector3 center, float value)
         {
             var (cursorDistance, _, _) = GetCursorDistance(center);
-            var angle = 360f - Mathf.Clamp01(value).Remap(0f, 1f, 0f, 360f);
+            var angle = Mathf.Clamp01(value).Remap(0f, 1f, 0f, 360f);
             var zeroPosition = center + Vector3.up * cursorDistance;
-            return MathHelper.RotateCoords(zeroPosition, center, Quaternion.Euler(Vector3.forward * angle));
-            //var cursorDirection = Quaternion.AngleAxis(angle, Vector3.forward) * Vector3.up;
-            //return center + cursorDirection * cursorDistance;
+            var cursorPosition = MathHelper.RotateCoords(zeroPosition, center, Quaternion.Euler(Vector3.forward * (360f - angle)));
+            return new ColorCursorData { Position = cursorPosition, Angle = angle, Value = value};
         }
-
-        protected override bool IsClickValid(Vector3? position, Vector3 center, out Vector3 cursorPosition, out float colorValue)
+        
+        protected override bool IsClickValid(Vector3? position, Vector3 center, out ColorCursorData data)
         {
-            cursorPosition = Vector3.zero;
-            colorValue = 1f;
-            
-            if (!position.HasValue) return false;
+            if (!position.HasValue)
+            {
+                data = default;
+                return false;
+            }
 
             var pos = position.Value;
 
             var (cursorDistance, innerRadius, outerRadius) = GetCursorDistance(center);
             
             var cursorDirection = (pos - center).normalized;
-            cursorPosition = center + cursorDirection * cursorDistance;
+            var cursorPosition = center + cursorDirection * cursorDistance;
             
             var clickDistance = Vector3.Distance(center, pos);
 
             var isValid = clickDistance >= innerRadius && clickDistance <= outerRadius;
             
             var angle = MathHelper.GetAngle360(pos, center, Vector2.up);
-            colorValue = ColorHelper.Angle360ToHue(angle);
+            var colorValue = ColorHelper.Angle360ToHue(angle);
+
+            data = new ColorCursorData { Position = cursorPosition, Angle = angle, Value = colorValue };
 
             return isValid;
         }

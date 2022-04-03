@@ -11,8 +11,11 @@ namespace ColorSelector.Components
         private static readonly int FlipX = Shader.PropertyToID("_FlipX");
         private static readonly int FlipY = Shader.PropertyToID("_FlipY");
         
+        [Range(0f, 360f)]
         [SerializeField] private float _startAngle = 10;
+        [Range(0f, 360f)]
         [SerializeField] private float _endAngle = 170;
+        
         [SerializeField] private float _clickRadiusTolerance = 0.1f;
         
         [Range(0f, 10f)]
@@ -24,14 +27,14 @@ namespace ColorSelector.Components
         [SerializeField] private bool _flipY;
 
         [Space(10f)]
-        [SerializeField]private string _colorProperty = "Color0";
+        [SerializeField] private string _colorProperty = "_Color0";
         
         public override void OnColorChanged(ColorSelection colorSelection)
         {
             Material.SetColor(_colorProperty, colorSelection.HueColor);
         }
 
-        protected override Vector3 ValueToCursorPosition(Vector3 center, float value)
+        protected override ColorCursorData ValueToCursorData(Vector3 center, float value)
         {
             var (cursorDistance, _, _) = GetCursorDistance(center);
 
@@ -40,33 +43,37 @@ namespace ColorSelector.Components
             var flipAngle = _flipX ? -1f : 1f;
             var angle = Mathf.Clamp01(value).Remap(0f, 1f, _startAngle, _endAngle);
             var zeroPosition = center + Vector3.up * cursorDistance;
-            
-            return MathHelper.RotateCoords(zeroPosition, center, Quaternion.Euler(Vector3.forward * angle * flipAngle));
+            var cursorPosition = MathHelper.RotateCoords(zeroPosition, center, Quaternion.Euler(Vector3.forward * angle * flipAngle));
+
+            return new ColorCursorData { Position = cursorPosition, Angle = angle, Value = value };
         }
 
-        protected override bool IsClickValid(Vector3? position, Vector3 center, out Vector3 cursorPosition, out float colorValue)
+        protected override bool IsClickValid(Vector3? position, Vector3 center, out ColorCursorData data)
         {
-            cursorPosition = Vector3.zero;
-            colorValue = 1f;
-            
-            if (!position.HasValue) return false;
+            if (!position.HasValue)
+            {
+                data = default;
+                return false;
+            }
 
             var pos = position.Value;
             
             var (cursorDistance, innerRadius, outerRadius) = GetCursorDistance(center);
-            var zeroPosition = center + Vector3.up * cursorDistance;
+            
+            var upDirection = transform.up; //TODO: change this.transform to main rect transform!
+            var zeroPosition = center + upDirection * cursorDistance;
             
             var flipAngle = _flipX ? -1f : 1f;
-            var angle = MathHelper.GetAngle360(pos, center, Vector2.up);
+            var angle = MathHelper.GetAngle360(pos, center, upDirection);
             
-            if (!_flipX)
+            if (_flipX)
             {
                 angle = 360f - angle;
             }
             
             var angleClamped = Mathf.Clamp(angle, _startAngle, _endAngle);
 
-            cursorPosition = MathHelper.RotateCoords(zeroPosition, center, Quaternion.Euler(Vector3.forward * angleClamped * flipAngle));
+            var cursorPosition = MathHelper.RotateCoords(zeroPosition, center, Quaternion.Euler(Vector3.forward * angleClamped * flipAngle));
             
             var clickDistance = Vector3.Distance(center, pos);
 
@@ -75,8 +82,12 @@ namespace ColorSelector.Components
 
             var isValid = isAngleValid && isPositionValid;
 
-            colorValue = angleClamped.Remap01(_startAngle, _endAngle);
+            var colorValue = angleClamped.Remap01(_startAngle, _endAngle);
             if (_reverseValue) colorValue = 1f - colorValue;
+            
+            data = new ColorCursorData {Position = cursorPosition, Angle = angleClamped, Value = colorValue };
+            
+            Debug.Log($"{gameObject.name}: angle={angle} posValid={isPositionValid} angleValid={isAngleValid} valid={isValid}");
 
             return isValid;
         }
@@ -84,6 +95,9 @@ namespace ColorSelector.Components
         protected override void OnMaterialSetup(Material material)
         {
             base.OnMaterialSetup(material);
+
+            if (_startAngle > _endAngle) _startAngle = _endAngle;
+            
             material.SetFloat(Rotate, _startAngle);
             material.SetFloat(Sector, _endAngle - _startAngle);
             material.SetFloat(FlipX, _flipX ? 1f : 0f);

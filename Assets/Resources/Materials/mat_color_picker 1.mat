@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3471926853289762161
+--- !u!114 &-3563067053948644935
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,9 +20,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mat_slider_left
-  m_Shader: {fileID: 4800000, guid: 87f1977848bfe8143a4b70c420e18db9, type: 3}
-  m_ShaderKeywords: FLIP_Y
+  m_Name: mat_color_picker 1
+  m_Shader: {fileID: 4800000, guid: a47587fc4c181554e9a825e50c513016, type: 3}
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -90,10 +90,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _AlphaClip: 0
+    - _BackgroundCircle: 0.829
     - _Blend: 0
     - _BumpScale: 1
-    - _CircleSize0: 0.47
-    - _CircleSize1: 0.348
+    - _CircleSize: 48.3
+    - _CircleSize0: 1
+    - _CircleSize1: 0.8
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -102,24 +104,21 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _FlipUv: 0
-    - _FlipX: 0
-    - _FlipY: 1
+    - _FrameCircle: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _InnerCircle: 0.95
+    - _GradientCircle: 0
+    - _GradientSmooth: 0
+    - _InnerCircle: 0.763
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _OuterCircle: 1
+    - _OuterCircle: 0.88
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Rotate: 10
-    - _Rotate1: 0
-    - _Sector: 160
-    - _Sector0: 160
-    - _Sector1: -2
+    - _SamplerCircle: 0
+    - _SamplerFrameCircle: 0
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -130,8 +129,10 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color0: {r: 1, g: 0, b: 0.5163393, a: 1}
-    - _Color1: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FrameColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Gradient0: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 1}
+    - _Gradient1: {r: 1, g: 1, b: 1, a: 1}
+    - _SamplerColor: {r: 0, g: 0.5408828, b: 0.5566038, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

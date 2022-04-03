@@ -4,11 +4,16 @@ Shader "Kardamoony/Color Selector/Gradient Slider"
     {
         _OuterCircle ("Outer Circle", Range(0, 1)) = 1
         _InnerCircle ("Inner Circle", Range(0, 1)) = 0.5
+        
+        [Space]
         _Color0 ("Color0", Color) = (1, 1, 1, 1)
         _Color1 ("Color1", Color) = (0, 0, 0, 1)
-        _Sector ("Sector", Range(0, 360)) = 0
-        _Rotate ("Rotate", Range(-180, 180)) = 0
         
+        [Space]
+        _Rotate ("Rotate", Range(0, 360)) = 0
+        _Sector ("Sector", Range(0, 360)) = 0
+        
+        [Space]
         [Toggle(FLIP_X)] _FlipX ("Flip X", float) = 0
         [Toggle(FLIP_Y)] _FlipY ("Flip Y", float) = 0
     }
@@ -34,7 +39,7 @@ Shader "Kardamoony/Color Selector/Gradient Slider"
             
             #include "Assets/Resources/Shaders/ShaderHelpers.hlsl"
 
-            #define UV_CENTER (0.5, 0.5)
+            #define UV_CENTER float2(0.5, 0.5)
 
             struct Attributes
             {
@@ -48,8 +53,7 @@ Shader "Kardamoony/Color Selector/Gradient Slider"
                 float4 pos : SV_POSITION;
                 half4 uv : TEXCOORD0;
                 half4 color : COLOR0;
-
-                float2 rotationData : TEXCOORD1; //colored sector, center x, center y, 
+                float2 rotationData : TEXCOORD1; //center x, center y, 
             };
 
             TEXTURE2D(_MainTex);
@@ -57,12 +61,16 @@ Shader "Kardamoony/Color Selector/Gradient Slider"
             
             CBUFFER_START(UnityPerMaterial)
                 float4 _MainTex_ST;
+            
                 float _OuterCircle;
                 float _InnerCircle;
+            
                 half4 _Color0;
                 half4 _Color1;
+            
                 float _Sector;
                 float _Rotate;
+            
                 half _FlipX;
                 half _FlipY;
             CBUFFER_END
@@ -78,7 +86,7 @@ Shader "Kardamoony/Color Selector/Gradient Slider"
                 OUT.uv.w = abs(_FlipY - OUT.uv.w);
                 
                 OUT.color = IN.color;
-                OUT.rotationData = float2(DegToRad(_Sector - 180), DegToRad(_Rotate));
+                OUT.rotationData = float2(DegToRad(_Sector - 180), DegToRad(_Rotate + 180));
                 return OUT;
             }
 
@@ -87,8 +95,7 @@ Shader "Kardamoony/Color Selector/Gradient Slider"
                 float sector0 = IN.rotationData.x;
                 float rotation = IN.rotationData.y;
                 
-                float2 uv = float2(IN.uv.z, IN.uv.w);
-                uv = Rotate(uv, UV_CENTER, rotation);
+                float2 uv = Rotate(IN.uv.zw, UV_CENTER, rotation);
                 uv = (uv - 0.5) * 2;
                 
                 float angle = atan2(uv.x, uv.y);
