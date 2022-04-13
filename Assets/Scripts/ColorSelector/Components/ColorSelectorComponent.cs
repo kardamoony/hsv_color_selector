@@ -1,10 +1,9 @@
-using ColorSelector.Interfaces;
 using UnityEngine;
 
 namespace ColorSelector.Components
 {
-    public abstract class ColorSelectorComponent : MonoBehaviour, IColorChangeListener
+    public abstract class ColorSelectorComponent : MonoBehaviour
     {
-        public virtual void OnColorChanged(ColorSelection colorSelection) { }
+        public abstract void OnColorChanged(ColorSelection colorSelection);
     }
 }

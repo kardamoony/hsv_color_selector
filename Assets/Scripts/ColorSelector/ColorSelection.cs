@@ -60,7 +60,7 @@ namespace ColorSelector
             UpdateColor();
         }
 
-        public void SetColor(Color color)
+        public ColorSelection SetColor(Color color)
         {
             Color = color;
             Color.RGBToHSV(color, out _h, out _s, out _v);
@@ -68,6 +68,8 @@ namespace ColorSelector
             HueColor = Color.HSVToRGB(_h, 1f, 1f);
             SaturationColor = Color.HSVToRGB(_h, _s, 1f);
             ValueColor = Color.HSVToRGB(_h, 1f, _v);
+
+            return this;
         }
 
         public Color GetColor(SelectionType selectionType)
