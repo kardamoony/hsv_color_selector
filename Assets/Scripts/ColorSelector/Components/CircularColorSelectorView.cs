@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ColorSelector.Components
 {
-    public abstract class CircularColorValueController : ColorValueController
+    public abstract class CircularColorSelectorView : ColorSelectorView
     {
         private static readonly int OuterCircle = Shader.PropertyToID("_OuterCircle");
         private static readonly int InnerCircle = Shader.PropertyToID("_InnerCircle");

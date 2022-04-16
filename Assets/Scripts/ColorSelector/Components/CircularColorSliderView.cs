@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ColorSelector.Components
 {
-    public class CircularColorSlider : CircularColorValueController
+    public class CircularColorSliderView : CircularColorSelectorView
     {
         private static readonly int Sector = Shader.PropertyToID("_Sector");
         private static readonly int Rotate = Shader.PropertyToID("_Rotate");
@@ -27,9 +27,6 @@ namespace ColorSelector.Components
         [SerializeField] private bool _flipX;
         [SerializeField] private bool _flipY;
 
-        [Space(10f)]
-        [SerializeField] private string _colorProperty = "_Color0";
-        
         /*public override void OnColorChanged(ColorSelection colorSelection)
         {
             Material.SetColor(_colorProperty, colorSelection.HueColor);
@@ -37,20 +34,12 @@ namespace ColorSelector.Components
 
         protected override ICursorInfo ValueToCursorInfo(Vector3 center, float value)
         {
-            //var (cursorDistance, _, _) = GetCursorDistance(center);
-
-            //value = _reverseValue ? 1f - value : value;
-            
-            //var flipAngle = _flipX ? -1f : 1f;
             var angle = Mathf.Clamp01(value).Remap(0f, 1f, _startAngle, _endAngle);
             
             if (_reverseValue)
             {
                 angle = _endAngle - angle + _startAngle;
             }
-
-            //var zeroPosition = center + Vector3.up * cursorDistance;
-            //var cursorPosition = MathHelper.RotateCoords(zeroPosition, center, Quaternion.Euler(Vector3.forward * angle * flipAngle));
 
             return new CursorRotationInfo(angle, _rotationAxis);
         }

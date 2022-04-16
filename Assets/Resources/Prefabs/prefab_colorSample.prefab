@@ -200,5 +200,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1f5307c55ef08e48bc0c6ddeb27f4f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PreviewImg: {fileID: 4903033491495997438}
   PreviewType: 4
+  _previewImg: {fileID: 4903033491495997438}

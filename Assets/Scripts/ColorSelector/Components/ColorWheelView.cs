@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ColorSelector.Components
 {
     [ExecuteInEditMode]
-    public class ColorWheel : CircularColorValueController
+    public class ColorWheelView : CircularColorSelectorView
     {
         private static readonly int BackgroundCircle = Shader.PropertyToID("_BackgroundCircle");
 

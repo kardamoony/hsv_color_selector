@@ -6,8 +6,7 @@ Shader "Kardamoony/Color Selector/Gradient Slider"
         _InnerCircle ("Inner Circle", Range(0, 1)) = 0.5
         
         [Space]
-        _Color0 ("Color0", Color) = (1, 1, 1, 1)
-        _Color1 ("Color1", Color) = (0, 0, 0, 1)
+        _Color ("Color", Color) = (0, 0, 0, 1)
         
         [Space]
         _Rotate ("Rotate", Range(0, 360)) = 0
@@ -64,9 +63,8 @@ Shader "Kardamoony/Color Selector/Gradient Slider"
             
                 float _OuterCircle;
                 float _InnerCircle;
-            
-                half4 _Color0;
-                half4 _Color1;
+
+                half4 _Color;
             
                 float _Sector;
                 float _Rotate;
@@ -120,7 +118,7 @@ Shader "Kardamoony/Color Selector/Gradient Slider"
 
                 gradient *= 1 - bttmCircle;
 
-                half4 color = lerp(_Color1, _Color0, gradient);
+                half4 color = lerp(_Color, IN.color, gradient);
                 color.a *= alpha;
                 
                 return color;

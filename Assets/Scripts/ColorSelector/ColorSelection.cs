@@ -74,24 +74,24 @@ namespace ColorSelector
 
         public Color GetColor(SelectionType selectionType)
         {
-            switch (selectionType)
+            return selectionType switch
             {
-                case SelectionType.Hue: return HueColor;
-                case SelectionType.Saturation: return SaturationColor;
-                case SelectionType.Value: return ValueColor;
-                default: return Color;
-            }
+                SelectionType.Hue => HueColor,
+                SelectionType.Saturation => SaturationColor,
+                SelectionType.Value => ValueColor,
+                _ => Color
+            };
         }
 
         public float GetSelectionValue(SelectionType selectionType)
         {
-            switch (selectionType)
+            return selectionType switch
             {
-                case SelectionType.Hue: return _h;
-                case SelectionType.Saturation: return _s;
-                case SelectionType.Value: return _v;
-                default: return 0f;
-            }
+                SelectionType.Hue => _h,
+                SelectionType.Saturation => _s,
+                SelectionType.Value => _v,
+                _ => 0f
+            };
         }
         
         private void UpdateColor()

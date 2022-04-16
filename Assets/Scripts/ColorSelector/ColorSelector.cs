@@ -1,4 +1,3 @@
-using System;
 using ColorSelector.Components;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,8 +10,8 @@ namespace ColorSelector
         [SerializeField] private PointerEventsProcessor _pointerEventsProcessor;
         
         [Space(5f)]
-        [SerializeField] private ColorSelectorComponent[] _colorSelectorComponents;
-        [SerializeField] private ColorValueController[] _colorValueControllers;
+        [SerializeField] private ColorSelectorComponentBase[] _colorSelectorComponents;
+        [SerializeField] private ColorSelectorView[] _colorValueControllers;
         
         [Space(5f)]
         [SerializeField] private Color _initialColor = Color.red;
@@ -54,7 +53,7 @@ namespace ColorSelector
         {
             foreach (var component in _colorSelectorComponents)
             {
-                component.OnColorChanged(colorSelection);
+                component.UpdateViewOnColorChanged(colorSelection);
             }
         }
 
@@ -94,8 +93,8 @@ namespace ColorSelector
 
         private void Reset()
         {
-            _colorSelectorComponents = GetComponentsInChildren<ColorSelectorComponent>();
-            _colorValueControllers = GetComponentsInChildren<ColorValueController>();
+            _colorSelectorComponents = GetComponentsInChildren<ColorSelectorComponentBase>();
+            _colorValueControllers = GetComponentsInChildren<ColorSelectorView>();
             _initialColor = Color.white;
         }
 #endif

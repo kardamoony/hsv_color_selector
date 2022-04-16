@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace ColorSelector.Components
 {
-    public abstract class ColorValueController : ColorSelectorComponent
+    public abstract class ColorSelectorView : ColorSelectorComponentBase
     {
         [SerializeField] private RectTransform _rect;
         [SerializeField] private ColorSelection.SelectionType _selectionType;
-        [SerializeField]private Transform _cursorTransform;
+        [SerializeField] private Transform _cursorTransform;
         
-        [SerializeField] protected Material Material;
+        [SerializeField] protected Material Material; //material setup should not occur here!
 
         private readonly Vector3[] _corners = new Vector3[4];
         
-        public override void OnColorChanged(ColorSelection colorSelection)
+        public override void UpdateViewOnColorChanged(ColorSelection colorSelection)
         {
             UpdateCursor(ValueToCursorInfo(_rect.position, colorSelection.GetSelectionValue(_selectionType)));
         }
@@ -26,9 +26,7 @@ namespace ColorSelector.Components
             if (dragStartPosition.HasValue && !isDragValid) return;
 
             if (!IsClickValid(pointerPosition, center, out var cursorPositionInfo, out var value) && !isDragValid) return;
-  
-            //UpdateCursor(cursorPositionInfo);
- 
+
             callback?.Invoke(_selectionType, value);
         }
 
@@ -38,7 +36,7 @@ namespace ColorSelector.Components
 
         protected abstract void OnMaterialSetup(Material material);
         
-        protected float GetMaxRadius(Vector3 center)
+        protected float GetMaxRadius(Vector3 center) //why is radius here? move to circular!
         {
             //TODO: world corners are bad!!!!
             _rect.GetWorldCorners(_corners); //order is: bottom left, top left, top right, bottom right
