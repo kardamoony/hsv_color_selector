@@ -1,103 +1,99 @@
-using ColorSelector.Components;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace ColorSelector
 {
-    [RequireComponent(typeof(PointerEventsProcessor))]
     public class ColorSelector : MonoBehaviour
     {
-        [SerializeField] private PointerEventsProcessor _pointerEventsProcessor;
+        public event Action<Color> OnColorChanged; 
+
+        [SerializeField] private ColorSelectionView[] _views;
+        [SerializeField] private List<ColorPreviewBase> _colorPreviews;
         
-        [Space(5f)]
-        [SerializeField] private ColorSelectorComponentBase[] _colorSelectorComponents;
-        [SerializeField] private ColorSelectorView[] _colorValueControllers;
-        
-        [Space(5f)]
+        [Space(10f)]
         [SerializeField] private Color _initialColor = Color.red;
-        
-        private readonly ColorSelection _currentSelection = new ColorSelection(1f, 1f, 1f);
-        
-        private void HandlePointerClickEvent(PointerEventData pointerEventData)
+
+        private ColorSelectionModel _model;
+        private ColorSelectionModel Model => _model ??= CreateModel();
+
+        public void AddColorListener(ColorPreviewBase colorPreview)
         {
-            HandlePointerEvent(pointerEventData.position);
+            _colorPreviews ??= new List<ColorPreviewBase>();
+            if (_colorPreviews.Contains(colorPreview)) return;
+            _colorPreviews.Add(colorPreview);
         }
 
-        private void HandlePointerDragEvent(PointerEventData pointerEventData, Vector2 dragStartPosition)
+        public void RemoveColorListener(ColorPreviewBase colorPreview)
         {
-            HandlePointerEvent(pointerEventData.position, dragStartPosition);
+            if (_colorPreviews == null || !_colorPreviews.Contains(colorPreview)) return;
+            _colorPreviews.Remove(colorPreview);
         }
 
-        private void HandlePointerEvent(Vector3 pointerPosition, Vector3? dragStartPosition = null)
+        private ColorSelectionModel CreateModel()
         {
-            foreach (var valueController in _colorValueControllers)
+            return new ColorSelectionModel(_initialColor);
+        }
+        
+        private void InitializeViews(ColorSelectionModel model)
+        {
+            foreach (var view in _views)
             {
-                valueController.ProcessClick(pointerPosition, dragStartPosition, HandleColorChanged);
+                view.Initialize(model);
             }
         }
 
-        private void HandleColorChanged(ColorSelection.SelectionType selectionType, float value)
+        private void InitializePreviews(ColorSelectionModel model)
         {
-            _currentSelection.SetColor(selectionType, value);
-            NotifyListeners(_currentSelection);
-        }
-
-        private void HandleColorChanged(Color color)
-        {
-            var colorSelection = _currentSelection.SetColor(color);
-            NotifyListeners(colorSelection);
-
-        }
-
-        private void NotifyListeners(ColorSelection colorSelection)
-        {
-            foreach (var component in _colorSelectorComponents)
+            foreach (var preview in _colorPreviews)
             {
-                component.UpdateViewOnColorChanged(colorSelection);
+                preview.OnColorChanged(model);
             }
         }
 
-        private void Subscribe(PointerEventsProcessor pointerEventsProcessor)
+        private void HandleOnColorChanged(ColorSelectionModel model)
         {
-            if (!pointerEventsProcessor) return;
-            pointerEventsProcessor.OnPointerClickedEvent += HandlePointerClickEvent;
-            pointerEventsProcessor.OnPointerDragEvent += HandlePointerDragEvent;
-        }
-
-        private void Unsubscribe(PointerEventsProcessor pointerEventsProcessor)
-        {
-            if (!pointerEventsProcessor) return;
-            pointerEventsProcessor.OnPointerClickedEvent -= HandlePointerClickEvent;
-            pointerEventsProcessor.OnPointerDragEvent -= HandlePointerDragEvent;
+            foreach (var preview in _colorPreviews)
+            {
+                preview.OnColorChanged(model);
+            }
+            
+            OnColorChanged?.Invoke(model.GetColor(ColorSelectionModel.ColorValueType.RGBA));
         }
 
         private void Awake()
         {
-            _pointerEventsProcessor = GetComponent<PointerEventsProcessor>();
-            Subscribe(_pointerEventsProcessor);
-            HandleColorChanged(_initialColor);
+            InitializeViews(Model);
+            InitializePreviews(Model);
+            Model.OnColorChanged += HandleOnColorChanged;
         }
 
         private void OnDestroy()
         {
-            Unsubscribe(_pointerEventsProcessor);
+            Model.OnColorChanged -= HandleOnColorChanged;
         }
 
 #if UNITY_EDITOR
-        
-        [ContextMenu("Editor Set Color")]
-        private void EditorSetColor()
-        {
-            HandleColorChanged(_initialColor);
-        }
-
         private void Reset()
         {
-            _colorSelectorComponents = GetComponentsInChildren<ColorSelectorComponentBase>();
-            _colorValueControllers = GetComponentsInChildren<ColorSelectorView>();
-            _initialColor = Color.white;
+            CollectViews();
+            CollectPreviews();
+        }
+
+        [ContextMenu("Collect Views")]
+        private void CollectViews()
+        {
+            _views = GetComponentsInChildren<ColorSelectionView>();
+        }
+
+        [ContextMenu("Collect Color Previews")]
+        private void CollectPreviews()
+        {
+            _colorPreviews = GetComponentsInChildren<ColorPreviewBase>().ToList();
         }
 #endif
-        
     }
 }
+
+

@@ -2,19 +2,16 @@ Shader "Kardamoony/Color Selector/Gradient Slider"
 {
     Properties
     {
-        _OuterCircle ("Outer Circle", Range(0, 1)) = 1
-        _InnerCircle ("Inner Circle", Range(0, 1)) = 0.5
-        
-        [Space]
         _Color ("Color", Color) = (0, 0, 0, 1)
         
-        [Space]
-        _Rotate ("Rotate", Range(0, 360)) = 0
-        _Sector ("Sector", Range(0, 360)) = 0
+        [HideInInspector] _OuterCircle ("Outer Circle", Range(0, 1)) = 1
+        [HideInInspector] _InnerCircle ("Inner Circle", Range(0, 1)) = 0.5
+
+        [HideInInspector] _Rotate ("Rotate", Range(0, 360)) = 0
+        [HideInInspector] _Sector ("Sector", Range(0, 360)) = 0
         
-        [Space]
-        [Toggle(FLIP_X)] _FlipX ("Flip X", float) = 0
-        [Toggle(FLIP_Y)] _FlipY ("Flip Y", float) = 0
+        [HideInInspector] [Toggle(FLIP_X)] _FlipX ("Flip X", float) = 0
+        [HideInInspector] [Toggle(FLIP_Y)] _FlipY ("Flip Y", float) = 0
     }
     SubShader
     {

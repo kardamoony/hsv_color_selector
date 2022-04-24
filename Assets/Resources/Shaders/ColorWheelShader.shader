@@ -3,15 +3,9 @@ Shader "Kardamoony/Color Selector/Color Wheel"
     Properties
     {
         _BackgroundCircle ("Background Circle", Range(0, 1)) = 1
-        _SamplerCircle ("Sampler Circle", Range(0, 1)) = 1
         
-        _OuterCircle ("Outer Circle", Range(0, 1)) = 1
-        _InnerCircle ("Inner Circle", Range(0, 1)) = 0.5
-        
-        [Space(10)]
-        _FrameColor ("Frame Color", Color) = (1, 1, 1, 1)
-        _SamplerColor ("Sampler Color", Color) = (1, 0, 0, 1)
-        
+        [HideInInspector] _OuterCircle ("Outer Circle", Range(0, 1)) = 1
+        [HideInInspector] _InnerCircle ("Inner Circle", Range(0, 1)) = 0.5
     }
     SubShader
     {
@@ -52,12 +46,7 @@ Shader "Kardamoony/Color Selector/Color Wheel"
             CBUFFER_START(UnityPerMaterial)
                 float _OuterCircle;
                 float _InnerCircle;
-            
                 float _BackgroundCircle;
-                float _SamplerCircle;
-            
-                half4 _FrameColor;
-                half4 _SamplerColor;
             CBUFFER_END
 
              Varyings vert (Attributes IN)
@@ -91,16 +80,14 @@ Shader "Kardamoony/Color Selector/Color Wheel"
                 half outerCircle = GetCircle(IN.uv, _OuterCircle);
                 half innerCircle = GetCircle(IN.uv, _InnerCircle);
                 half frameCircle = GetCircle(IN.uv, _BackgroundCircle);
-                half samplerCircle = GetCircle(IN.uv, _SamplerCircle);
 
                 half wheelAlpha = outerCircle - innerCircle;
-                half backgroundAlpha = frameCircle - wheelAlpha - samplerCircle;
-
-                half4 samplerColor = _SamplerColor * samplerCircle;
-                half4 frameColor = _FrameColor * IN.color * backgroundAlpha;
+                half backgroundAlpha = frameCircle - wheelAlpha;
+                
+                half4 frameColor = IN.color * backgroundAlpha;
                 half4 rgbWheelColor = half4(hue2rgb(angle), wheelAlpha) * wheelAlpha;
                 
-                return saturate(frameColor + rgbWheelColor + samplerColor);
+                return saturate(frameColor + rgbWheelColor);
             }
             
             ENDHLSL
