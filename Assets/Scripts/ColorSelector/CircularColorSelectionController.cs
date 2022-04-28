@@ -1,7 +1,7 @@
 using StaticHelpers;
 using UnityEngine;
 
-namespace ColorSelector
+namespace Selector
 {
     public class CircularColorSelectionParams
     {

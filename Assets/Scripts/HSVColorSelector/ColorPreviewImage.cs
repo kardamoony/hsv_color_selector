@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Selector
+namespace HSVColorSelector
 {
-    public class ImageColorPreview : ColorPreviewBase
+    public class ColorPreviewImage : ColorPreviewBase
     {
         [SerializeField] private Image _image;
         

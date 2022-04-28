@@ -14,6 +14,7 @@ Shader "Kardamoont/Ring"
         _StencilReadMask ("Stencil Read Mask", Range(0, 255)) = 255
         
         [HideInInspector] _ColorMask ("Color Mask", Float) = 15
+        
     }
     SubShader
     {

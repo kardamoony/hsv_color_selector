@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Selector
+namespace HSVColorSelector
 {
     public interface ICursorUpdater
     {
@@ -39,7 +39,7 @@ namespace Selector
             _rotationAxis = axis;
             _isWorldRotation = isWorldRotation;
         }
-        
+
         public void UpdateCursor(in Transform cursorTransform)
         {
             var rotation = Quaternion.Euler(_rotationAxis * _angle);

@@ -1,15 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UI;
 using UnityEngine;
 
-namespace Selector
+namespace HSVColorSelector
 {
     public class ColorSelector : MonoBehaviour
     {
-        public event Action<Color> OnColorChanged; 
+        public event Action<Color> OnColorChanged;
 
-        [SerializeField] private ColorSelectionView[] _views;
+        [SerializeField] private PointerEventsProcessor _pointerEventsProcessor;
+        [SerializeField] private ColorValueControllerBase[] _controllers;
         [SerializeField] private List<ColorPreviewBase> _colorPreviews;
         
         [Space(10f)]
@@ -36,11 +38,19 @@ namespace Selector
             return new ColorSelectionModel(_initialColor);
         }
         
-        private void InitializeViews(ColorSelectionModel model)
+        private void InitializeControllers(ColorSelectionModel model)
         {
-            foreach (var view in _views)
+            foreach (var controller in _controllers)
             {
-                view.Initialize(model);
+                controller.Initialize(model, _pointerEventsProcessor);
+            }
+        }
+
+        private void DeinitializeControllers()
+        {
+            foreach (var controller in _controllers)
+            {
+                controller.Deinitialize();
             }
         }
 
@@ -59,18 +69,19 @@ namespace Selector
                 preview.OnColorChanged(model);
             }
             
-            OnColorChanged?.Invoke(model.GetColor(ColorSelectionModel.ColorValueType.RGBA));
+            OnColorChanged?.Invoke(model.GetColor(ColorValueType.RGBA));
         }
 
         private void Awake()
         {
-            InitializeViews(Model);
+            InitializeControllers(Model);
             InitializePreviews(Model);
             Model.OnColorChanged += HandleOnColorChanged;
         }
 
         private void OnDestroy()
         {
+            DeinitializeControllers();
             Model.OnColorChanged -= HandleOnColorChanged;
         }
 
@@ -84,7 +95,7 @@ namespace Selector
         [ContextMenu("Collect Views")]
         private void CollectViews()
         {
-            _views = GetComponentsInChildren<ColorSelectionView>();
+            _controllers = GetComponentsInChildren<ColorValueControllerBase>();
         }
 
         [ContextMenu("Collect Color Previews")]
@@ -95,5 +106,3 @@ namespace Selector
 #endif
     }
 }
-
-

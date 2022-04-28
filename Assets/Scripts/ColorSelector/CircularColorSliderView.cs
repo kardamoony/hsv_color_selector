@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ColorSelector
+namespace Selector
 {
     public class CircularColorSliderView : CircularColorSelectorView
     {

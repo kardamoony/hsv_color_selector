@@ -4,7 +4,7 @@ using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace ColorSelector
+namespace Selector
 {
     public abstract class ColorSelectionView : ViewBase<ColorSelectionModel>
     {

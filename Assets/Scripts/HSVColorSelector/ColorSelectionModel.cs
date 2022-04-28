@@ -1,10 +1,17 @@
 using System;
-using MVC;
 using UnityEngine;
 
-namespace Selector
+namespace HSVColorSelector
 {
-    public class ColorSelectionModel : ModelBase
+    public enum ColorValueType
+    {
+        RGBA,
+        Hue,
+        Saturation,
+        Value
+    }
+    
+    public class ColorSelectionModel
     {
         public event Action<ColorSelectionModel> OnColorChanged;
 
@@ -16,14 +23,6 @@ namespace Selector
         private float _h;
         private float _s;
         private float _v;
-    
-        public enum ColorValueType
-        {
-            RGBA,
-            Hue,
-            Saturation,
-            Value
-        }
 
         public ColorSelectionModel(Color initialColor)
         {
@@ -89,6 +88,5 @@ namespace Selector
             
             return Color.HSVToRGB(_h, _s, _v);
         }
-
     }
 }

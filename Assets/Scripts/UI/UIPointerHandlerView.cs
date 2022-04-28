@@ -1,4 +1,4 @@
-using ColorSelector;
+using Selector;
 using MVC;
 using UnityEngine;
 using UnityEngine.EventSystems;

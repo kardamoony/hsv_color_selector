@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace ColorSelector
+namespace Selector
 {
     public class CircularColorSelectorView : ColorSelectionView
     {

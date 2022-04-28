@@ -1,6 +1,6 @@
 using MVC;
 
-namespace ColorSelector
+namespace Selector
 {
     public abstract class ColorSelectionController : ViewControllerBase<ColorSelectionModel>
     {
