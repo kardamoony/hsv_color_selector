@@ -10,6 +10,8 @@ namespace UI
 
         public event PointerClickEventHandler OnPointerClickedEvent;
         public event PointerDragEventHandler OnPointerDragEvent;
+
+        [SerializeField] private bool _debug;
         
         private bool _isDragging;
         private Vector2 _dragStartPosition;
@@ -18,6 +20,7 @@ namespace UI
         {
             if (_isDragging) return;
             InvokePointerClickEvent(eventData);
+            ShowDebugInfo(eventData);
         }
         
         public void OnBeginDrag(PointerEventData eventData)
@@ -44,6 +47,12 @@ namespace UI
         private void InvokePointerDragEvent(PointerEventData eventData, Vector2 dragStartPosition)
         {
             OnPointerDragEvent?.Invoke(eventData, dragStartPosition);
+        }
+
+        private void ShowDebugInfo(PointerEventData eventData)
+        {
+            if (!_debug) return;
+            Debug.Log($"{GetType().Name}: click={eventData.pointerClick.name}");
         }
 
     }

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UI;
 using UnityEngine;
 
@@ -8,31 +5,24 @@ namespace HSVColorSelector
 {
     public class ColorSelector : MonoBehaviour
     {
-        public event Action<Color> OnColorChanged;
-
         [SerializeField] private PointerEventsProcessor _pointerEventsProcessor;
+        
+        [Space(5f)] 
         [SerializeField] private ColorValueControllerBase[] _controllers;
-        [SerializeField] private List<ColorPreviewBase> _colorPreviews;
+        [SerializeField] private ColorPreviewBase[] _colorPreviews;
+
+        [Space(5f)] 
+        [SerializeField] private ColorTargetBase[] _colorTargets;
+
+        [Space(5f)] 
+        [SerializeField] private ColorHistory _colorHistory;
         
         [Space(10f)]
         [SerializeField] private Color _initialColor = Color.red;
 
         private ColorSelectionModel _model;
         private ColorSelectionModel Model => _model ??= CreateModel();
-
-        public void AddColorListener(ColorPreviewBase colorPreview)
-        {
-            _colorPreviews ??= new List<ColorPreviewBase>();
-            if (_colorPreviews.Contains(colorPreview)) return;
-            _colorPreviews.Add(colorPreview);
-        }
-
-        public void RemoveColorListener(ColorPreviewBase colorPreview)
-        {
-            if (_colorPreviews == null || !_colorPreviews.Contains(colorPreview)) return;
-            _colorPreviews.Remove(colorPreview);
-        }
-
+        
         private ColorSelectionModel CreateModel()
         {
             return new ColorSelectionModel(_initialColor);
@@ -62,46 +52,79 @@ namespace HSVColorSelector
             }
         }
 
+        private void InitializeColorTargets(ColorSelectionModel model)
+        {
+            foreach (var target in _colorTargets)
+            {
+                target.Initialize(model);
+            }
+        }
+
+        private void InitializeColorHistory(ColorSelectionModel model)
+        {
+            _colorHistory.Initialize(model);
+        }
+        
+        private void DeinitializeColorHistory()
+        {
+            _colorHistory.Deinitialize();
+        }
+
         private void HandleOnColorChanged(ColorSelectionModel model)
         {
             foreach (var preview in _colorPreviews)
             {
                 preview.OnColorChanged(model);
             }
+        }
+
+        private void HandleOnColorApplied(Color color)
+        {
             
-            OnColorChanged?.Invoke(model.GetColor(ColorValueType.RGBA));
         }
 
         private void Awake()
         {
             InitializeControllers(Model);
             InitializePreviews(Model);
+            InitializeColorTargets(Model);
+            InitializeColorHistory(Model);
             Model.OnColorChanged += HandleOnColorChanged;
+            Model.OnColorApplied += HandleOnColorApplied;
         }
 
         private void OnDestroy()
         {
             DeinitializeControllers();
+            DeinitializeColorHistory();
             Model.OnColorChanged -= HandleOnColorChanged;
+            Model.OnColorApplied -= HandleOnColorApplied;
         }
 
 #if UNITY_EDITOR
         private void Reset()
         {
-            CollectViews();
-            CollectPreviews();
+            CollectColorViews();
+            CollectColorPreviews();
+            CollectColorTargets();
         }
 
         [ContextMenu("Collect Views")]
-        private void CollectViews()
+        private void CollectColorViews()
         {
             _controllers = GetComponentsInChildren<ColorValueControllerBase>();
         }
 
         [ContextMenu("Collect Color Previews")]
-        private void CollectPreviews()
+        private void CollectColorPreviews()
         {
-            _colorPreviews = GetComponentsInChildren<ColorPreviewBase>().ToList();
+            _colorPreviews = GetComponentsInChildren<ColorPreviewBase>();
+        }
+
+        [ContextMenu("Collect Color Targets")]
+        private void CollectColorTargets()
+        {
+            _colorTargets = FindObjectsOfType<ColorTargetBase>();
         }
 #endif
     }

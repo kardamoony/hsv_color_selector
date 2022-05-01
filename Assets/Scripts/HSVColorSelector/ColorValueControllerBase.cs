@@ -42,7 +42,7 @@ namespace HSVColorSelector
         protected virtual void HandleOnPointerDragEvent(PointerEventData pointerEventData, Vector2 dragStartPosition){}
         
         protected virtual void SetupMaterialOnValidated(Material material){}
-        
+
         private void Subscribe(ColorSelectionModel model, PointerEventsProcessor pointerEventsProcessor)
         {
             model.OnColorChanged += HandleOnColorChanged;

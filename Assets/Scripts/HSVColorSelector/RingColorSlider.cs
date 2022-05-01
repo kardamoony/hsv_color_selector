@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace HSVColorSelector
 {
-    public class CircularColorSlider : CircularColorValueController
+    public class RingColorSlider : RingColorValueController
     {
         private static readonly int SectorProperty = Shader.PropertyToID("_Sector");
         private static readonly int RotateProperty = Shader.PropertyToID("_Rotate");
@@ -49,7 +49,7 @@ namespace HSVColorSelector
 
             var colorValue = angleClamped.Remap01(_startAngle, _endAngle);
             
-            Model.UpdateColor(colorValue, ColorValueType);
+            Model.SetColorValue(colorValue, ColorValueType);
         }
         
         protected override ICursorUpdater GetCursorUpdater(float value)

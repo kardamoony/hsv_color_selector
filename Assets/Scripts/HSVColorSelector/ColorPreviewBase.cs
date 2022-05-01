@@ -7,5 +7,6 @@ namespace HSVColorSelector
         [SerializeField] protected ColorValueType ColorValueType;
         
         public abstract void OnColorChanged(ColorSelectionModel model);
+        public abstract void SetColor(Color color);
     }
 }

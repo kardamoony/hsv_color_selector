@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace HSVColorSelector
 {
-    public class CircularColorValueController : ColorValueControllerBase
+    public class RingColorValueController : ColorValueControllerBase
     {
         private static readonly int InnerCircleProperty = Shader.PropertyToID("_InnerCircle");
         private static readonly int OuterCircleProperty = Shader.PropertyToID("_OuterCircle");
@@ -36,7 +36,7 @@ namespace HSVColorSelector
             var angle = MathHelper.GetAngle360(displayPosition, center, RotationZeroAxis);
             var colorValue = ColorHelper.Angle360ToHue(angle);
             
-            Model.UpdateColor(colorValue, ColorValueType);
+            Model.SetColorValue(colorValue, ColorValueType);
         }
         
         protected override void HandleOnColorChanged(ColorSelectionModel model)

@@ -9,7 +9,12 @@ namespace HSVColorSelector
         
         public override void OnColorChanged(ColorSelectionModel model)
         {
-            _image.color = model.GetColor(ColorValueType);
+            SetColor(model.GetColor(ColorValueType));
+        }
+
+        public override void SetColor(Color color)
+        {
+            _image.color = color;
         }
     }
 }

@@ -14,6 +14,7 @@ namespace HSVColorSelector
     public class ColorSelectionModel
     {
         public event Action<ColorSelectionModel> OnColorChanged;
+        public event Action<Color> OnColorApplied; 
 
         private Color _rgbaColor;
         private Color _hueColor;
@@ -26,19 +27,9 @@ namespace HSVColorSelector
 
         public ColorSelectionModel(Color initialColor)
         {
-            _rgbaColor = initialColor;
-            Color.RGBToHSV(initialColor, out _h, out _s, out _v);
-            _hueColor = Color.HSVToRGB(_h, 1f, 1f);
-            _saturationColor = Color.HSVToRGB(_h, _s, 1f);
-            _valueColor = Color.HSVToRGB(_h, 1f, _v);
+            SetColor(initialColor);
         }
-
-        public void UpdateColor(float value, ColorValueType type)
-        {
-            _rgbaColor = UpdateColorInternal(value, type);
-            OnColorChanged?.Invoke(this);
-        }
-
+        
         public Color GetColor(ColorValueType colorValueType)
         {
             switch (colorValueType)
@@ -50,6 +41,23 @@ namespace HSVColorSelector
             }
         }
 
+        public void SetColor(Color color)
+        {
+            _rgbaColor = color;
+            Color.RGBToHSV(color, out _h, out _s, out _v);
+            _hueColor = Color.HSVToRGB(_h, 1f, 1f);
+            _saturationColor = Color.HSVToRGB(_h, _s, 1f);
+            _valueColor = Color.HSVToRGB(_h, 1f, _v);
+            InvokeUpdate();
+        }
+
+        public Color ApplyColor()
+        {
+            var appliedColor = _rgbaColor;
+            OnColorApplied?.Invoke(appliedColor);
+            return appliedColor;
+        }
+
         public float GetColorValue(ColorValueType colorValueType)
         {
             switch (colorValueType)
@@ -59,6 +67,12 @@ namespace HSVColorSelector
                 case ColorValueType.Value : return _v;
                 default: return 0f;
             }
+        }
+        
+        public void SetColorValue(float value, ColorValueType type)
+        {
+            _rgbaColor = UpdateColorInternal(value, type);
+            InvokeUpdate();
         }
 
         private Color UpdateColorInternal(float value, ColorValueType type)
@@ -88,5 +102,7 @@ namespace HSVColorSelector
             
             return Color.HSVToRGB(_h, _s, _v);
         }
+
+        private void InvokeUpdate() => OnColorChanged?.Invoke(this);
     }
 }
