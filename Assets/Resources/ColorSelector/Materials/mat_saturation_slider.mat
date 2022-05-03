@@ -108,16 +108,16 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _InnerCircle: 0.505
+    - _InnerCircle: 0.52
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _OuterCircle: 0.534
+    - _OuterCircle: 0.57
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Rotate: 20
+    - _Rotate: 12
     - _Rotate1: 0
-    - _Sector: 140
+    - _Sector: 156
     - _Sector0: -20
     - _Sector1: -2
     - _Smoothness: 0.5

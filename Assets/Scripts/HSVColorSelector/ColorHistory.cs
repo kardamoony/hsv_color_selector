@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using StaticHelpers;
 using UnityEngine;
 
 namespace HSVColorSelector
@@ -9,12 +10,6 @@ namespace HSVColorSelector
         [SerializeField] private Transform _swatchesParent;
         [SerializeField] private int _historyElementsCount = 5;
 
-        [Space(10f)] 
-        [SerializeField] private GameObject _background;
-        [SerializeField] private RectTransform _backgroundRect;
-        [SerializeField] private Vector2 _backgroundInitialSize = new Vector2(56f, 56f);
-        [SerializeField] private Vector2 _backgroundCellSize = new Vector2(47f, 0);
-
         private ColorSelectionModel _model;
         private ColorSwatch[] _swatches;
         private readonly List<Color> _colors = new List<Color>();
@@ -23,7 +18,6 @@ namespace HSVColorSelector
         {
             _model = model;
             InitializeSwatches();
-            UpdateBackground(0);
             if (_model != null) _model.OnColorApplied += HandleOnColorApplied;
         }
         
@@ -57,9 +51,14 @@ namespace HSVColorSelector
 
         private void HandleOnColorApplied(Color newColor)
         {
+            if (HasSimilarColorInHistory(newColor)) return;
             UpdateColorsHistory(newColor, out var colorsCount);
             UpdateSwatches(colorsCount);
-            UpdateBackground(colorsCount);
+        }
+
+        private bool HasSimilarColorInHistory(Color color)
+        {
+            return _colors.Exists(c => c.Approximately(color));
         }
 
         private void HandleOnSwatchClicked(Color swatchColor)
@@ -95,19 +94,6 @@ namespace HSVColorSelector
                     swatch.Deactivate();
                 }
             }
-        }
-
-        private void UpdateBackground(int colorsCount)
-        {
-            var active = colorsCount > 0;
-            _background.SetActive(active);
-            
-            if (!active) return;
-            
-            var size = _backgroundInitialSize + _backgroundCellSize * (colorsCount - 1);
-
-            _backgroundRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, size.x);
-            _backgroundRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, size.y);
         }
     }
 }

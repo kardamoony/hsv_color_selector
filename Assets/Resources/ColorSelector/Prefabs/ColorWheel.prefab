@@ -59,7 +59,7 @@ MonoBehaviour:
   RotationZeroAxis: {x: 0, y: 1}
   RotationAxis: {x: 0, y: 0, z: -1}
   InnerCircle: 0.77
-  OuterCircle: 0.87
+  OuterCircle: 0.92
 --- !u!222 &280691545008167450
 CanvasRenderer:
   m_ObjectHideFlags: 0

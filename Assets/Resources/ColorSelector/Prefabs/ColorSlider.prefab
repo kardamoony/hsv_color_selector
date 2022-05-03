@@ -124,14 +124,14 @@ MonoBehaviour:
   ClickDistanceTolerance: 15
   RotationZeroAxis: {x: 0, y: 1}
   RotationAxis: {x: 0, y: 0, z: -1}
-  InnerCircle: 0.505
-  OuterCircle: 0.534
-  _startAngle: 20
-  _endAngle: 160
+  InnerCircle: 0.52
+  OuterCircle: 0.57
+  _startAngle: 12
+  _endAngle: 168
   _clickAngleTolerance: 2
   _reverseValue: 0
-  _flipX: 1
   _flipY: 0
+  _flipX: 0
 --- !u!1001 &4429093874469118999
 PrefabInstance:
   m_ObjectHideFlags: 0

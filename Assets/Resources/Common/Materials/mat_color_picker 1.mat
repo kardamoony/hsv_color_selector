@@ -90,7 +90,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _AlphaClip: 0
-    - _BackgroundCircle: 0.829
+    - _BackgroundCircle: 0.86
     - _Blend: 0
     - _BumpScale: 1
     - _CircleSize: 48.3
@@ -113,7 +113,7 @@ Material:
     - _InnerCircle: 0.77
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _OuterCircle: 0.87
+    - _OuterCircle: 0.92
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
