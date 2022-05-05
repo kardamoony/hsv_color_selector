@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Atlas_Main
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 8
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 90e90fe90e062364cbfa874bd269fb6b, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 9b3c1711dd60e0646b8e3e2e07b787eb, type: 3}
+  - {fileID: 21300000, guid: 96f3ce22eaf39574eaf82222f85cb700, type: 3}
+  - {fileID: 21300000, guid: 270421c37fd6044949cc4a43166380ac, type: 3}
+  - {fileID: 21300000, guid: 4b037bcdf9a9949aa855c6bae070afd4, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - background_bracket
+  - solid_circle
+  - background_arrow
+  - swatch_circle
+  m_RenderDataMap: {}
+  m_Tag: Atlas_Main
+  m_IsVariant: 0
