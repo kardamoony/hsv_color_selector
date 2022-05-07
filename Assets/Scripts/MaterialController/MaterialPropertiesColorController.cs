@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace MaterialController
@@ -17,10 +16,17 @@ namespace MaterialController
             _renderer.SetPropertyBlock(_propertyBlock);
         }
 
-        public void Awake()
+        private void Awake()
         {
             _propertyBlock = new MaterialPropertyBlock();
             _colorPropertyId = Shader.PropertyToID(_colorPropertyName);
         }
+        
+#if UNITY_EDITOR
+        private void Reset()
+        {
+            _renderer = GetComponent<Renderer>();
+        }
+#endif
     }
 }

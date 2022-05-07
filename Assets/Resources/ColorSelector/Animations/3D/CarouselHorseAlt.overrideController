@@ -1,0 +1,13 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: CarouselHorseAlt
+  m_Controller: {fileID: 9100000, guid: 4e2d1fbd820f30b4b96aa0934205d564, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: a15f2af7529ab914b865c0e68ba69a26, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 391fd06c7805b5f4e9d91f363c1e8027, type: 2}

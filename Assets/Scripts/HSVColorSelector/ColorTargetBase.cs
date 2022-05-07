@@ -8,8 +8,7 @@ namespace HSVColorSelector
     public abstract class ColorTargetBase : MonoBehaviour
     {
         [SerializeField] private PointerEventsProcessor _pointerEventsProcessor;
-
-        private bool _initialized;
+        
         private ColorSelectionModel _model;
         private IMaterialColorController _colorController;
 
@@ -18,28 +17,32 @@ namespace HSVColorSelector
         public void Initialize(ColorSelectionModel model)
         {
             _model = model;
-            _initialized = model != null;
         }
         
         protected abstract void HandleOnPointerClick(PointerEventData pointerEventData);
-
-        protected virtual void OnAwakened(){}
+        
 
         protected Color ApplyColor()
         {
-            if (_model == null) return Color.magenta;
+            if (_model == null) return Color.black;
             return _model.ApplyColor();
         }
         
         private void Awake()
         {
             _pointerEventsProcessor.OnPointerClickedEvent += HandleOnPointerClick;
-            OnAwakened();
         }
 
         private void OnDestroy()
         {
             _pointerEventsProcessor.OnPointerClickedEvent -= HandleOnPointerClick;
         }
+        
+#if UNITY_EDITOR
+        private void Reset()
+        {
+            _pointerEventsProcessor = GetComponent<PointerEventsProcessor>();
+        }
+#endif
     }
 }
