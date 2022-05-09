@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace MaterialController
@@ -9,6 +8,7 @@ namespace MaterialController
         [SerializeField] private Material _material;
 
         private int _colorPropertyId;
+        private Color _initialColor;
         
         public void SetColor(Color color)
         {
@@ -18,6 +18,20 @@ namespace MaterialController
         private void Awake()
         {
             _colorPropertyId = Shader.PropertyToID(_colorPropertyName);
+            _initialColor = _material.GetColor(_colorPropertyId);
         }
+
+        private void OnDestroy()
+        {
+            SetColor(_initialColor);
+        }
+        
+#if UNITY_EDITOR
+        private void Reset()
+        {
+            var r = GetComponent<Renderer>();
+            if (r) _material = r.sharedMaterial;
+        }
+#endif
     }
 }
