@@ -34,7 +34,7 @@ namespace HSVColorSelector
             for (var i = 0; i < _historyElementsCount; i++)
             {
                 var swatch = Instantiate(_swatchPrefab, _swatchesParent);
-                swatch.Deactivate();
+                swatch.Initialize();
                 swatch.OnClicked += HandleOnSwatchClicked;
                 _swatches[i] = swatch;
             }

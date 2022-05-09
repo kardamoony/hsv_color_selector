@@ -133,10 +133,10 @@ MonoBehaviour:
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
-    m_HighlightedTrigger: 
+    m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
-    m_SelectedTrigger: 
-    m_DisabledTrigger: 
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 5125234501854713906}
   m_OnClick:
@@ -223,6 +223,10 @@ PrefabInstance:
     - target: {fileID: 4903033491028733895, guid: 3ff4fffd3baabbb4084524fb6aad5f65, type: 3}
       propertyPath: m_RaycastPadding.z
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4903033491495997438, guid: 3ff4fffd3baabbb4084524fb6aad5f65, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4903033492618128340, guid: 3ff4fffd3baabbb4084524fb6aad5f65, type: 3}
       propertyPath: m_Name

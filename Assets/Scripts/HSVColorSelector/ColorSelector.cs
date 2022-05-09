@@ -126,6 +126,9 @@ namespace HSVColorSelector
         {
             _colorTargets = FindObjectsOfType<ColorTargetBase>();
         }
+
+        [ContextMenu("Apply Color")]
+        private void EditorApplyColor() => Model.ApplyColor();
 #endif
     }
 }

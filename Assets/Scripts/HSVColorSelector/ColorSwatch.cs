@@ -15,6 +15,13 @@ namespace HSVColorSelector
         private Color _color;
         private bool _initialized;
 
+        public void Initialize()
+        {
+            _cachedGo = gameObject;
+            _button.onClick.AddListener(HandleOnClick);
+            Deactivate();
+        }
+        
         public void Activate(Color color)
         {
             _color = color;
@@ -33,12 +40,6 @@ namespace HSVColorSelector
         {
             if (!_initialized) return;
             OnClicked?.Invoke(_color);
-        }
-
-        private void Awake()
-        {
-            _cachedGo = gameObject;
-            _button.onClick.AddListener(HandleOnClick);
         }
 
         private void OnDestroy()
