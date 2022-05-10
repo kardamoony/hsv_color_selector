@@ -1,4 +1,4 @@
-Shader "Kardamoony/URP/Simple Toon"
+Shader "Kardamoony/URP/Simple Lit"
 {
     Properties
     {
@@ -92,14 +92,14 @@ Shader "Kardamoony/URP/Simple Toon"
                 return OUT;
             }
 
-            half4 toon_lighting_diffuse(Varyings IN)
+            half4 lighting_diffuse(Varyings IN)
             {
                 Light mainLight = GetMainLight(IN.shadowCoord);
 
                 half shadowAttenuation = smoothstep(0, 1, mainLight.shadowAttenuation);
                 
                 float NdotL = dot(_MainLightPosition.xyz, IN.worldNormal);
-                half diff = saturate(NdotL);//smoothstep(0, 1, NdotL);
+                half diff = saturate(NdotL);
         
                 float3 viewDir = 1 - normalize(_WorldSpaceCameraPos - IN.worldPos.xyz);
                 half fresnel = pow(saturate(dot(viewDir, IN.worldNormal)), _RimPower);
@@ -115,7 +115,7 @@ Shader "Kardamoony/URP/Simple Toon"
                 UNITY_SETUP_INSTANCE_ID(IN);
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(IN);
                 
-                half4 col = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _BaseColor * toon_lighting_diffuse(IN);
+                half4 col = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _BaseColor * lighting_diffuse(IN);
                 return col;
             }
             
