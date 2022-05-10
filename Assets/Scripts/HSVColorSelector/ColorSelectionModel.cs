@@ -1,4 +1,5 @@
 using System;
+using Commands;
 using UnityEngine;
 
 namespace HSVColorSelector
@@ -14,7 +15,7 @@ namespace HSVColorSelector
     public class ColorSelectionModel
     {
         public event Action<ColorSelectionModel> OnColorChanged;
-        public event Action<Color> OnColorApplied; 
+        public event Action<ColorApplyCommand> OnColorApplied; 
 
         private Color _rgbaColor;
         private Color _hueColor;
@@ -51,11 +52,12 @@ namespace HSVColorSelector
             InvokeUpdate();
         }
 
-        public Color ApplyColor()
+        public void ApplyColor(ColorTargetBase colorTarget, Color previousColor)
         {
             var appliedColor = _rgbaColor;
-            OnColorApplied?.Invoke(appliedColor);
-            return appliedColor;
+            var colorApplyCommand = new ColorApplyCommand(appliedColor, previousColor, colorTarget);
+            colorApplyCommand.Execute();
+            OnColorApplied?.Invoke(colorApplyCommand);
         }
 
         public float GetColorValue(ColorValueType colorValueType)

@@ -5,5 +5,6 @@ namespace MaterialController
     public interface IMaterialColorController
     {
         void SetColor(Color color);
+        Color GetColor();
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace UI
 {
-    public class UIPsressScaleTweener : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+    public class UIPressScaleTweener : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         [SerializeField] private Transform _scalableContent;
         [SerializeField] private float _pressedScale = 0.9f;

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using Commands;
 using StaticHelpers;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace HSVColorSelector
 {
@@ -9,22 +11,26 @@ namespace HSVColorSelector
         [SerializeField] private ColorSwatch _swatchPrefab;
         [SerializeField] private Transform _swatchesParent;
         [SerializeField] private int _historyElementsCount = 5;
+        [SerializeField] private Button _undoButton;
 
         private ColorSelectionModel _model;
         private ColorSwatch[] _swatches;
-        private readonly List<Color> _colors = new List<Color>();
+        private readonly List<ColorApplyCommand> _colorCommands = new List<ColorApplyCommand>();
 
         public void Initialize(ColorSelectionModel model)
         {
             _model = model;
             InitializeSwatches();
+            UpdateUndoButtonVisibility(0);
             if (_model != null) _model.OnColorApplied += HandleOnColorApplied;
+            if (_undoButton) _undoButton.onClick.AddListener(HandleUndoButtonClicked);
         }
         
         public void Deinitialize()
         {
             DeinitializeSwatches();
             if (_model != null) _model.OnColorApplied -= HandleOnColorApplied;
+            if (_undoButton) _undoButton.onClick.RemoveListener(HandleUndoButtonClicked);
         }
 
         private void InitializeSwatches()
@@ -49,16 +55,17 @@ namespace HSVColorSelector
             }
         }
 
-        private void HandleOnColorApplied(Color newColor)
+        private void HandleOnColorApplied(ColorApplyCommand command)
         {
-            if (HasSimilarColorInHistory(newColor)) return;
-            UpdateColorsHistory(newColor, out var colorsCount);
+            if (HasSimilarColorInHistory(command.Color)) return;
+            UpdateColorsHistory(command, out var colorsCount);
             UpdateSwatches(colorsCount);
+            UpdateUndoButtonVisibility(colorsCount);
         }
 
         private bool HasSimilarColorInHistory(Color color)
         {
-            return _colors.Exists(c => c.Approximately(color));
+            return _colorCommands.Exists(c => c.Color.Approximately(color));
         }
 
         private void HandleOnSwatchClicked(Color swatchColor)
@@ -66,17 +73,31 @@ namespace HSVColorSelector
             _model.SetColor(swatchColor);
         }
 
-        private void UpdateColorsHistory(Color newColor, out int newColorsCount)
+        private void HandleUndoButtonClicked()
         {
-            var colorsCount = _colors.Count;
+            var colorsCount = _colorCommands.Count;
+            if (colorsCount < 1) return;
+            var command = _colorCommands[0];
+            _colorCommands.Remove(command);
+            command.Undo();
+
+            var newColorsCount = colorsCount - 1;
+            
+            UpdateSwatches(newColorsCount);
+            UpdateUndoButtonVisibility(newColorsCount);
+        }
+
+        private void UpdateColorsHistory(ColorApplyCommand command, out int newColorsCount)
+        {
+            var colorsCount = _colorCommands.Count;
 
             if (colorsCount >= _historyElementsCount)
             {
-                _colors.RemoveAt(colorsCount - 1);
+                _colorCommands.RemoveAt(colorsCount - 1);
             }
             
-            _colors.Insert(0, newColor);
-            newColorsCount = _colors.Count;
+            _colorCommands.Insert(0, command);
+            newColorsCount = _colorCommands.Count;
         }
 
         private void UpdateSwatches(int colorsCount)
@@ -87,13 +108,19 @@ namespace HSVColorSelector
 
                 if (i < colorsCount)
                 {
-                    swatch.Activate(_colors[i]);
+                    swatch.Activate(_colorCommands[i].Color);
                 }
                 else
                 {
                     swatch.Deactivate();
                 }
             }
+        }
+
+        private void UpdateUndoButtonVisibility(int colorsCount)
+        {
+            if (!_undoButton) return;
+            _undoButton.gameObject.SetActive(colorsCount > 0);
         }
     }
 }

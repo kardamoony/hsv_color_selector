@@ -32,6 +32,9 @@ Shader "Kardamoony/URP/Simple Toon"
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
             #pragma multi_compile _ _SHADOWS_SOFT
             #pragma shader_feature _ALPHATEST_ON
+
+            // GPU Instancing
+            #pragma multi_compile_instancing
             
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
@@ -41,6 +44,8 @@ Shader "Kardamoony/URP/Simple Toon"
                 float4 positionOS : POSITION;
                 float2 uv : TEXCOORD0;
                 float3 normal : NORMAL;
+
+                UNITY_VERTEX_INPUT_INSTANCE_ID 
             };
 
             struct Varyings
@@ -50,6 +55,9 @@ Shader "Kardamoony/URP/Simple Toon"
                 float3 worldNormal : TEXCOORD1;
                 float3 worldPos : TEXCOORD2;
                 float4 shadowCoord : TEXCOORD3;
+
+                UNITY_VERTEX_INPUT_INSTANCE_ID         
+                UNITY_VERTEX_OUTPUT_STEREO
             };
 
             TEXTURE2D(_BaseMap);
@@ -68,6 +76,10 @@ Shader "Kardamoony/URP/Simple Toon"
             Varyings vert (Attributes IN)
             {
                 Varyings OUT;
+
+                UNITY_SETUP_INSTANCE_ID(IN);
+                UNITY_TRANSFER_INSTANCE_ID(IN, OUT);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(OUT);  
 
                 OUT.pos = TransformObjectToHClip(IN.positionOS.xyz);
                 OUT.uv = TRANSFORM_TEX(IN.uv, _BaseMap);
@@ -91,7 +103,6 @@ Shader "Kardamoony/URP/Simple Toon"
         
                 float3 viewDir = 1 - normalize(_WorldSpaceCameraPos - IN.worldPos.xyz);
                 half fresnel = pow(saturate(dot(viewDir, IN.worldNormal)), _RimPower);
-                //fresnel = smoothstep(0, 0.05,  fresnel);
 
                 half4 lighting = lerp(_MainLightColor, _RimColor, fresnel);
                 lighting = lerp(_AmbientColor, lighting, (diff + fresnel) * shadowAttenuation);
@@ -101,6 +112,9 @@ Shader "Kardamoony/URP/Simple Toon"
 
             half4 frag (Varyings IN) : SV_Target
             {
+                UNITY_SETUP_INSTANCE_ID(IN);
+                UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(IN);
+                
                 half4 col = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _BaseColor * toon_lighting_diffuse(IN);
                 return col;
             }

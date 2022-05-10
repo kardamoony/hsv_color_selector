@@ -14,18 +14,16 @@ namespace HSVColorSelector
 
         protected IMaterialColorController ColorController => _colorController ??= GetComponent<IMaterialColorController>();
         
+        public abstract void ApplyColor(Color color);
+        
         public void Initialize(ColorSelectionModel model)
         {
             _model = model;
         }
         
-        protected abstract void HandleOnPointerClick(PointerEventData pointerEventData);
-        
-
-        protected Color ApplyColor()
+        private void HandleOnPointerClick(PointerEventData pointerEventData)
         {
-            if (_model == null) return Color.black;
-            return _model.ApplyColor();
+            _model?.ApplyColor(this, ColorController.GetColor());
         }
         
         private void Awake()

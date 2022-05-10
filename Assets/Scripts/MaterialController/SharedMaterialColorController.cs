@@ -15,6 +15,11 @@ namespace MaterialController
             _material.SetColor(_colorPropertyId, color);
         }
 
+        public Color GetColor()
+        {
+            return _material.GetColor(_colorPropertyId);
+        }
+
         private void Awake()
         {
             _colorPropertyId = Shader.PropertyToID(_colorPropertyName);

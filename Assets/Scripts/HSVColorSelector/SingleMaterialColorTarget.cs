@@ -1,12 +1,12 @@
-using UnityEngine.EventSystems;
+using UnityEngine;
 
 namespace HSVColorSelector
 {
     public class SingleMaterialColorTarget : ColorTargetBase
     {
-        protected override void HandleOnPointerClick(PointerEventData pointerEventData)
+        public override void ApplyColor(Color color)
         {
-            ColorController.SetColor(ApplyColor());
+            ColorController.SetColor(color);
         }
     }
 }

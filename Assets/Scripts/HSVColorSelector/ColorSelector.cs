@@ -78,11 +78,6 @@ namespace HSVColorSelector
             }
         }
 
-        private void HandleOnColorApplied(Color color)
-        {
-            
-        }
-
         private void Awake()
         {
             InitializeControllers(Model);
@@ -90,7 +85,6 @@ namespace HSVColorSelector
             InitializeColorTargets(Model);
             InitializeColorHistory(Model);
             Model.OnColorChanged += HandleOnColorChanged;
-            Model.OnColorApplied += HandleOnColorApplied;
         }
 
         private void OnDestroy()
@@ -98,7 +92,6 @@ namespace HSVColorSelector
             DeinitializeControllers();
             DeinitializeColorHistory();
             Model.OnColorChanged -= HandleOnColorChanged;
-            Model.OnColorApplied -= HandleOnColorApplied;
         }
 
 #if UNITY_EDITOR
@@ -126,9 +119,6 @@ namespace HSVColorSelector
         {
             _colorTargets = FindObjectsOfType<ColorTargetBase>();
         }
-
-        [ContextMenu("Apply Color")]
-        private void EditorApplyColor() => Model.ApplyColor();
 #endif
     }
 }
