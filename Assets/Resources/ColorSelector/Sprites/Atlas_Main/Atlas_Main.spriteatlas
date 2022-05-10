@@ -40,11 +40,13 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 9b3c1711dd60e0646b8e3e2e07b787eb, type: 3}
   - {fileID: 21300000, guid: 96f3ce22eaf39574eaf82222f85cb700, type: 3}
   - {fileID: 21300000, guid: 270421c37fd6044949cc4a43166380ac, type: 3}
+  - {fileID: 21300000, guid: 0b6886a542c714c2ca7f1ab8fe7d2425, type: 3}
   - {fileID: 21300000, guid: 4b037bcdf9a9949aa855c6bae070afd4, type: 3}
   m_PackedSpriteNamesToIndex:
   - background_bracket
   - solid_circle
   - background_arrow
+  - undo_button
   - swatch_circle
   m_RenderDataMap: {}
   m_Tag: Atlas_Main
