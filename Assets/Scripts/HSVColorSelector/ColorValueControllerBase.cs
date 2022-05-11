@@ -16,7 +16,20 @@ namespace HSVColorSelector
         private IMaterialProvider _materialProvider;
         
         protected ColorSelectionModel Model;
-        
+
+        private IMaterialProvider MaterialProvider
+        {
+            get
+            {
+                if (_materialProvider == null)
+                {
+                    _materialProvider = GetComponent<IMaterialProvider>();
+                }
+
+                return _materialProvider;
+            }
+        }
+
         public void Initialize(ColorSelectionModel model, PointerEventsProcessor pointerEventsProcessor)
         {
             if (_initialized) return;
@@ -41,7 +54,7 @@ namespace HSVColorSelector
 
         protected virtual void HandleOnPointerDragEvent(PointerEventData pointerEventData, Vector2 dragStartPosition){}
         
-        protected virtual void SetupMaterialOnValidated(Material material){}
+        protected virtual void SetupMaterial(Material material){}
 
         private void Subscribe(ColorSelectionModel model, PointerEventsProcessor pointerEventsProcessor)
         {
@@ -57,17 +70,16 @@ namespace HSVColorSelector
             pointerEventsProcessor.OnPointerDragEvent -= HandleOnPointerDragEvent;
         }
 
+        private void Awake()
+        {
+            SetupMaterial(MaterialProvider.Material);
+        }
+
+#if UNITY_EDITOR
         private void OnValidate()
         {
-            if (_materialProvider == null)
-            {
-                _materialProvider = GetComponent<IMaterialProvider>();
-            }
-
-            if (_materialProvider != null)
-            {
-                SetupMaterialOnValidated(_materialProvider.Material);
-            }
+            SetupMaterial(MaterialProvider.Material);
         }
+#endif
     }
 }

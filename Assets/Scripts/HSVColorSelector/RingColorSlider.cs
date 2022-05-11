@@ -64,9 +64,9 @@ namespace HSVColorSelector
             return new CursorRotationUpdater(angle, RotationAxis);
         }
         
-        protected override void SetupMaterialOnValidated(Material material)
+        protected override void SetupMaterial(Material material)
         {
-            base.SetupMaterialOnValidated(material);
+            base.SetupMaterial(material);
 
             _flipX = RotationAxis.z > 0;
             

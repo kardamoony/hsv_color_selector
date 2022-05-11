@@ -6,7 +6,7 @@
             {
                 "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                 "key": "buildOutputDirList",
-                "value": "{\"m_Value\":\"/Users/d.karamova/repos/Builds/hsv_selector/hsv_selector;;;;;;;;;\"}"
+                "value": "{\"m_Value\":\"C:/Work/ColorPicker/WebGL Builds/1.3;C:/Work/Builds/hsv_color_selector/1.3;C:/Work/Builds/hsv_color_selector/1.2;C:/Work/Builds;/Users/d.karamova/repos/Builds/hsv_selector/hsv_selector;;;;;\"}"
             },
             {
                 "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
@@ -16,6 +16,11 @@
             {
                 "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                 "key": "autoPublish",
+                "value": "{\"m_Value\":true}"
+            },
+            {
+                "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "createDefaultBuildsFolder",
                 "value": "{\"m_Value\":true}"
             }
         ]

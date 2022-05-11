@@ -56,7 +56,7 @@ namespace HSVColorSelector
             OnPointerEvent(pointerEventData.position, dragStartPositon, InnerCircle, OuterCircle);
         }
 
-        protected override void SetupMaterialOnValidated(Material material)
+        protected override void SetupMaterial(Material material)
         {
             material.SetFloat(InnerCircleProperty, InnerCircle);
             material.SetFloat(OuterCircleProperty, OuterCircle);
