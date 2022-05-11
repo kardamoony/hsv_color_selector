@@ -8,7 +8,7 @@ Background music by [Trygve Larsen aka Nesrality](https://pixabay.com/users/nesr
 
 ## Try it on Unity Play!
 
-[Click here! <3] (https://play.unity.com/mg/other/1-3-7krzf)
+[Click here! <3](https://play.unity.com/mg/other/1-3-7krzf)
 
 ## License
 [MIT](https://github.com/kardamoony/hsv_color_selector/blob/master/LICENSE.txt)
